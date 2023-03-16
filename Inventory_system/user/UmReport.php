@@ -77,55 +77,59 @@ BALILIHAN CAMPUS
 
 INVENTORY CUSTODIAN SLIP
 
-
+EOD;
+$printname = $_SESSION['useridname'];
+$txtheader = <<<EOD
+Custodian Name : $printname   
 
 
 EOD;
 
 $html = <<<EOD
-<table cellspacing="1" cellpadding="1" border="0" style="border-color:gray;">
+<table cellspacing="0" cellpadding="1" border="1">
     <tr>
-        <th>Barcode Number</th>
-        <th>Borrower Name</th>
-        <th>Supply Name</th>    
-        <th>Quantity</th>
-        <th>Unit Price</th>
-        <th>Date Borrowed</th>
-        <th>Date Returned</th>
+        <td>Barcode Number</td>
+        <td>Supply Name</td>
+        <td>Quantity</td>
+        <td>Unit Price</td>
+        <td>Date Borrowed</td>
+        <td>Date Returned</td>
     </tr>
+</table>
 EOD;
 
-// print a block of text using Write()
 $pdf->Write(0, $txt, '', 0, 'C', true, 0, false, false, 0);
+$pdf->Write(0, $txtheader, '', 0, 'C', true, 0, false, false, 0);
+$pdf->writeHTMLCell(0, 0, '', '', $html, 0, 1, 0, true, '', true);  
 
-// Print text using writeHTMLCell()
-$pdf->writeHTMLCell(0, 0, '', '', $html, 0, 1, 0, true, '', true);
-$sql = "SELECT * FROM transactions  WHERE `borrower_name`='" .$_SESSION['useridname'] . "';";
+$sql = "SELECT * FROM transactions WHERE `borrower_name`='" .$_SESSION['useridname'] . "';";
 $actresult = mysqli_query($conn, $sql);
 while ($result = mysqli_fetch_assoc($actresult)) {
     $sql1 = "SELECT s.unit_price FROM `supplies` s WHERE s.name='" . $result['supply_name'] . "';";
     $actresult1 = mysqli_query($conn, $sql1);
     $result1 = mysqli_fetch_assoc($actresult1);
     $barcode = $result['barcode'];
-    $bname = $result['borrower_name'];
     $sname = $result['supply_name'];
     $quan = $result['quantity'];
     $uprice = $result1['unit_price'];
     $breleased = $result['date_released'];
     $breturned = $result['date_returned'];
-$data = <<<EOD
-<table cellspacing="1" cellpadding="1" border="0" style="border-color:gray;">
+
+$newhtml = <<<EOD
+<table cellspacing="0" cellpadding="1" border="1">
     <tr>
         <td>$barcode</td>
-        <td>$bname</td>
-        <td>$sname</td>    
+        <td>$sname</td>
         <td>$quan</td>
         <td>$uprice</td>
         <td>$breleased</td>
         <td>$breturned</td>
     </tr>
+</table>
 EOD;
-    $pdf->writeHTMLCell(0, 0, '', '', $data, 0, 1, 0, true, '', true);
+
+
+$pdf->writeHTMLCell(0, 0, '', '', $newhtml, 0, 1, 0, true, '', true);   
 }
 
 // ---------------------------------------------------------

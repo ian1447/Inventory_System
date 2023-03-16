@@ -58,6 +58,7 @@ include "../dbcon.php";
                       <th>Quantity</th>
                       <th>Unit Price</th>
                       <th>Date Acquired</th>
+                      <th>Date Returned</th>
                       <th>Status</th>
                     </tr>
                   </thead>
@@ -90,6 +91,14 @@ include "../dbcon.php";
                          </td>
                          <td>
                            <?php echo $result['date_released']; ?>
+                         </td>
+                         <td>
+                          <?php if ($result['date_returned'] == NULL) {
+                              echo "Not Yet Returned!";
+                            } else
+                            {
+                              echo $result['date_returned'];
+                            } ?>
                          </td>
                          <td>
                            <?php if ($result['date_returned'] == NULL) {

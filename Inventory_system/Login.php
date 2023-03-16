@@ -32,6 +32,11 @@
                         $_SESSION['printname'] = "";
                         $_SESSION['barcode'] = "";
                         $_SESSION['quantity'] = "";
+                        $_SESSION['classification'] = "";
+                        $_SESSION['article'] = "";
+                        $_SESSION['cost'] = "";
+                        $_SESSION['custodian'] = "";
+                        $_session['dateac'] = "";
                         if($row['privilege']==="admin")
                         {
                             header("Location: admin/index.php");

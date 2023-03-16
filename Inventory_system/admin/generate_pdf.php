@@ -37,6 +37,11 @@ $pdf->SetFillColor(255, 255, 255);
 
 $barcode = $_SESSION["barcode"];
 $quantity = $_SESSION["quantity"];
+$classification = $_SESSION["classification"];
+$article = $_SESSION["article"];
+$cost = $_SESSION['cost'];
+$custodian = $_SESSION['custodian'];
+$dateac = $_SESSION['dateac'];
 $page = 1;
 $horizontal = 0;
 $vertical = 0;
@@ -71,19 +76,19 @@ for ($i = 0; $i < $quantity; $i++)
         </tr>
         <tr>
         <th>Classification:</th>
-        <td></td>
+        <td>$classification</td>
         </tr>
         <tr>
         <th>Article and Description:</th>
-        <td></td>
+        <td>$article</td>
         </tr>
         <tr>
         <th>Acquisition Cost:</th>
-        <td></td>
+        <td>$cost</td>
         </tr>
         <tr>
         <th>Date Acquired:</th>
-        <td></td>
+        <td>$dateac</td>
         </tr>
         <tr>
         <th>Date of Account:</th>
@@ -91,7 +96,7 @@ for ($i = 0; $i < $quantity; $i++)
         </tr>
         <tr>
         <th>Property Custodian:</th>
-        <td></td>
+        <td>$custodian</td>
         </tr>
     </table>
 

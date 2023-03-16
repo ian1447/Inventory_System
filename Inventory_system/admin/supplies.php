@@ -88,6 +88,14 @@ include "../dbcon.php";
                               <label for="validationCustom01">Property Number: <span class="text-danger">*</span> </label>
                               <input type="text" class="form-control" id="validationCustom01"  name="barcode" placeholder="Enter Property Number" required>
                               </div>
+                              <div class="col-md-12 mb-2">
+                              <label for="validationCustom01">Classification: <span class="text-danger">*</span> </label>
+                              <input type="text" class="form-control" id="validationCustom01"  name="classification" placeholder="Enter Classification" required>
+                              </div>
+                              <div class="col-md-12 mb-2">
+                              <label for="validationCustom01">Article and Description: <span class="text-danger">*</span> </label>
+                              <input type="text" class="form-control" id="validationCustom01"  name="article" placeholder="Enter Article and Description" required>
+                              </div>
                               <div class="form-group">
                                 <label>Item Name:</label>
                                 <select id="" name="item_name" class="form-select">
@@ -165,10 +173,15 @@ include "../dbcon.php";
                                 $actresultname = mysqli_query($conn, $sqlname);
                                 $row = mysqli_fetch_assoc($actresultname);
                                 $sql = "INSERT INTO `transactions` (`supply_name`,`borrower_name`,`quantity`,date_released,barcode)
-                                                VALUES ('" . $supplyrow['name'] . "','" . $row['name'] . "','" . $_POST['quantity'] . "','" . $_POST['dateac'] . "','" .$barcode. "')";
+                                                VALUES ('" . $supplyrow['name'] . "','" . $row['name'] . "','" . $_POST['quantity'] . "','" . $_POST['dateac'] . "','" . $_POST['barcode'] . "')";
                                 if ($conn->query($sql) === TRUE) {
                                   $_SESSION["barcode"] = $_POST['barcode'];
                                   $_SESSION["quantity"] = $_POST['quantity'];
+                                  $_SESSION["classification"] = $_POST['classification'];
+                                  $_SESSION["article"] = $_POST['article'];
+                                  $_SESSION['cost'] = $_POST['quan'];
+                                  $_SESSION['custodian'] = $row['name'];
+                                  $_SESSION['dateac'] = $_POST['dateac'];
                                   echo '<script>alert("Supplies Addedd Successfully!") 
                                         window.location.href="supplies.php"</script>';
                                 } else {
