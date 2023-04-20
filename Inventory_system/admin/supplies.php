@@ -209,6 +209,7 @@ include "../dbcon.php";
               </div>
               <thead class>
                 <tr>
+                  <th>Barcode</th>
                   <th>Item Name</th>
                   <th>Category</th>
                   <th>Class Code</th>
@@ -226,16 +227,20 @@ include "../dbcon.php";
                   $sqlname = "SELECT `name` FROM `employees` WHERE id = '" . $_POST["bname"] . "'";
                   $actresultname = mysqli_query($conn, $sqlname);
                   $row = mysqli_fetch_assoc($actresultname);
-                  $sql = "SELECT c.`description`,s.`id`,s.`name`,t.`quantity` AS supplyquan,s.unit_price,s.`category`,(s.`quantity`-s.`borrowed_quantity`) AS remaining, t.borrower_name,
+                  $sql = "SELECT t.barcode,c.`description`,s.`id`,s.`name`,t.`quantity` AS supplyquan,s.unit_price,s.`category`,(s.`quantity`-s.`borrowed_quantity`) AS remaining, t.borrower_name,
                   DATE(t.date_released) AS date_released,t.date_returned, t.quantity AS borrwedquan,t.status,t.id AS transid, t.is_updated FROM `supplies` s
                   INNER JOIN transactions t ON t.supply_name = s.name
                   LEFT JOIN categories c ON c.`name` = s.`category`
-                  WHERE t.borrower_name = '" . $row['name'] . "';";
+                  WHERE t.borrower_name = '" . $row['name'] . "'
+                  ORDER BY t.barcode ASC;";
                   $actresult = mysqli_query($conn, $sql);
 
                   while ($result = mysqli_fetch_assoc($actresult)) {
                 ?>
                     <tr>
+                      <td>
+                        <?php echo $result['barcode']; ?>
+                      </td>
                       <td>
                         <?php echo $result['name']; ?>
                       </td>
@@ -284,11 +289,21 @@ include "../dbcon.php";
                       <td>
                         <div class="d-grid gap-2 d-md-flex">
                           <?php if ($result['is_updated']==0){
-                            ?>
-                             <a href="#edit<?php echo $result['transid']; ?>" data-toggle="modal" class="btn btn-primary btn-sm me-md-2"><span class="me-2"><i class="bi bi-pencil"></i></span> Update</a> ||
-                           <?php } else {
+                            if ($result['date_returned'] != NULL)
+                            { ?>
+                             <a href="#edit<?php echo $result['transid']; ?>" data-toggle="modal" class="btn btn-primary btn-sm me-md-2"><span class="me-2"><i class="bi bi-pencil"></i></span> sdf</a> ||
+                            <?php 
+                             }
+                             else 
+                             {
+                             echo '<button type="button" class="btn btn-light">Not yet Returned</button>';
+                             }}
+                            
+                            else {
                             echo '<button type="button" class="btn btn-light">Updated</button>';
                              } ?>
+
+
                           <?php if ($result['date_returned'] == NULL) { ?>
                             <a href="#ret<?php echo $result['transid']; ?>" data-toggle="modal" class="btn btn-primary btn-sm"><span class=""><i></i></span>
                               Return</a>
@@ -459,15 +474,19 @@ include "../dbcon.php";
                   <?php
                   }
                 } else {
-                  $sql = "SELECT c.`description`,s.`id`,s.`name`,t.`quantity` AS supplyquan,s.unit_price,s.`category`,(s.`quantity`-s.`borrowed_quantity`) AS remaining, t.borrower_name,
+                  $sql = "SELECT  t.barcode,c.`description`,s.`id`,s.`name`,t.`quantity` AS supplyquan,s.unit_price,s.`category`,(s.`quantity`-s.`borrowed_quantity`) AS remaining, t.borrower_name,
                   DATE(t.date_released) AS date_released,t.date_returned, t.quantity AS borrwedquan,t.status,t.id AS transid, t.is_updated FROM `supplies` s
                   INNER JOIN transactions t ON t.supply_name = s.name
-                  LEFT JOIN categories c ON c.`name` = s.`category`;";
+                  LEFT JOIN categories c ON c.`name` = s.`category`
+                  ORDER BY t.barcode ASC;";
                   $actresult = mysqli_query($conn, $sql);
 
                   while ($result = mysqli_fetch_assoc($actresult)) {
                   ?>
                     <tr>
+                      <td>
+                        <?php echo $result['barcode']; ?>
+                      </td>
                       <td>
                         <?php echo $result['name']; ?>
                       </td>
@@ -516,9 +535,17 @@ include "../dbcon.php";
                       <td>
                         <div class="d-grid gap-2 d-md-flex">
                           <?php if ($result['is_updated']==0){
-                            ?>
+                            if ($result['date_returned'] != NULL)
+                            { ?>
                              <a href="#edit<?php echo $result['transid']; ?>" data-toggle="modal" class="btn btn-primary btn-sm me-md-2"><span class="me-2"><i class="bi bi-pencil"></i></span> Update</a> ||
-                           <?php } else {
+                            <?php 
+                             }
+                             else 
+                             {
+                             echo '<button type="button" class="btn btn-light">Not yet Returned</button>';
+                             }}
+                            
+                            else {
                             echo '<button type="button" class="btn btn-light">Updated</button>';
                              } ?>
                           <?php if ($result['date_returned'] == NULL) { ?>
@@ -538,7 +565,7 @@ include "../dbcon.php";
                         <div class="modal-content">
                           <form id="update_form" method="POST">
                             <div class="modal-header">
-                              <h4 class="modal-title">Edit Employee</h4>
+                              <h4 class="modal-title">Update Supply</h4>
                               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                             </div>
                             <div class="modal-body">
@@ -642,51 +669,87 @@ include "../dbcon.php";
 
                     <!-- Delete -->
                     <div class="modal fade" id="ret<?php echo $result['transid']; ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                      <div class="modal-dialog">
+                    <div class="modal-dialog">
                         <div class="modal-content">
-                          <div class="modal-header">
-                            <center>
-                              <h4 class="modal-title" id="myModalLabel">Return</h4>
-                            </center>
-                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                          </div>
-                          <div class="modal-body">
-                            <?php
-                            $ret = mysqli_query($conn, "select * from transactions where id='" . $result['transid'] . "'");
-                            $drow = mysqli_fetch_array($ret);
-                            ?>
-                            <div class="container-fluid">
-                              <h5>
-                                <center>Are you sure to Return item <strong>
-                                    <?php echo ucwords($drow['supply_name']); ?>
-                                  </strong> borrowed by <?php echo ucwords($drow['borrower_name']); ?>?</center>
-                              </h5>
+                          <form id="update_form" method="POST">
+                            <div class="modal-header">
+                              <h4 class="modal-title">Return Supply</h4>
+                              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                             </div>
-                          </div>
-                          <form method="POST">
-                            <input type="hidden" id="id_u" name="returnid" value="<?php echo $drow['id']; ?>" class="form-control" required>
+                            <div class="modal-body">
+                              <?php
+                              $transaction = mysqli_query($conn, "select * from transactions where id='" . $result['transid'] . "'");
+                              $trow = mysqli_fetch_array($transaction);
+                              ?>
+                              <label>Borrowed Quantity</label>
+                              <!-- <input type="hidden" id="id_u" name="transid" value="<?php echo $trow['id']; ?>" class="form-control" readonly> -->
+                              <input type="hidden" id="id_u" name="rbarcode" value="<?php echo $trow['barcode']; ?>" class="form-control" readonly>
+                              <input type="hidden" id="id_u" name="datereleased" value="<?php echo $trow['date_released']; ?>" class="form-control" readonly>
+                              <input type="hidden" id="id_u" name="returnsupply" value="<?php echo $trow['supply_name']; ?>" class="form-control" readonly>
+                              <input type="hidden" id="id_u" name="returnname" value="<?php echo $trow['borrower_name']; ?>" class="form-control" readonly>
+                              <input type="hidden" id="id_u" name="returnid" value="<?php echo $trow['id']; ?>" class="form-control" readonly>
+                              <input type="number" id="id_u" name="transactionquan" value="<?php echo $trow['quantity']; ?>" class="form-control" readonly>
+                              <div class="form-group">
+                                <label>Quantity</label>
+                                <input type="number" id="desceiption_u" name="returnquan" value="" class="form-control" required>
+                              </div>
+                            </div>
                             <div class="modal-footer">
-                              <button type="button" class="btn btn-default" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Cancel</button>
-                              <button class="btn btn-primary"><span class="glyphicon glyphicon-trash"></span>
-                                Return</button>
+                              <input type="hidden" value="2" name="type">
+                              <input type="button" class="btn btn-defaulst" data-dismiss="modal" value="Cancel">
+                              <button class="btn btn-info" id="update">Return</button>
                             </div>
-                            <?php
-                            if (isset($_POST['returnid'])) {
-                              $sql = "UPDATE transactions set date_returned = NOW(), `status` = 1  WHERE id = ".$_POST['returnid']."";
-                              if ($conn->query($sql) === TRUE) {
-                                echo '<script>alert("Returned Successfully!") 
-                                                window.location.href="supplies.php"</script>';
-                              } else {
-                                echo '<script>alert("Returning Transaction Failed!\n Please Check SQL Connection String!") 
-                                                window.location.href="supplies.php"</script>';
+                          </form>
+                          <?php
+                          if (isset($_POST['returnquan'])) {
+                            if ($_POST['returnquan'] >$_POST['transactionquan'])
+                            {
+                              echo '<script>alert("Quantity exceeds transaction quan") 
+                              window.location.href="supplies.php"</script>';
+                            }
+                            else{
+                              if ($_POST['returnquan']  == $_POST['transactionquan'])
+                              {                            
+                                $sql = "UPDATE transactions set date_returned = NOW(), `status` = 1  WHERE id = ".$_POST['returnid']."";
+                                if ($conn->query($sql) === TRUE) {
+                                  echo '<script>alert("Returned Successfully!") 
+                                                  window.location.href="supplies.php"</script>';
+                                } else {
+                                  echo '<script>alert("Returning Transaction Failed!\n Please Check SQL Connection String!") 
+                                                  window.location.href="supplies.php"</script>';
+                                }
+                              }
+                              else
+                              {
+                                $newquan = $_POST['transactionquan']-$_POST['returnquan'];
+                                $sqleditquan = "UPDATE transactions set quantity = ".$newquan." WHERE id = ".$_POST['returnid']."";
+                                $conn->query($sqleditquan);
+
+                                $sqlnew = "INSERT INTO `transactions` (`supply_name`,`borrower_name`,`quantity`,date_released,barcode,date_returned,`status`)
+                                      VALUES ('".$_POST['returnsupply']."','" .$_POST['returnname']. "','" .$_POST['returnquan']. "','" .$_POST['datereleased']. "','" . $_POST['rbarcode'] . "',now(),1)";
+                                if ($conn->query($sqlnew) === TRUE) {
+                                  $_POST["returnquan"] = null;
+                                  echo '<script>alert("Success!") 
+                                                  window.location.href="supplies.php"</script>';
+                                } else {
+                                  echo '<script>alert("Returning Transaction Failed!\n Please Check SQL Connection String!") 
+                                                  window.location.href="supplies.php"</script>';
+                                }
                               }
                             }
-                            ?>
-                          </form>
+
+                            // $sql = "UPDATE transactions set date_returned = NOW(), `status` = 1  WHERE id = ".$_POST['returnid']."";
+                            //   if ($conn->query($sql) === TRUE) {
+                            //     echo '<script>alert("Returned Successfully!") 
+                            //                     window.location.href="supplies.php"</script>';
+                            //   } else {
+                            //     echo '<script>alert("Returning Transaction Failed!\n Please Check SQL Connection String!") 
+                            //                     window.location.href="supplies.php"</script>';
+                            //   }
+                          }
+                          ?>
                         </div>
                       </div>
-                    </div>
-                    <!-- /.modal -->
                 <?php
                   }
                 }
