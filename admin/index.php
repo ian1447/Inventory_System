@@ -22,17 +22,22 @@ $_SESSION['barcode'] = "";
   <title>Inventory System</title>
 </head>
 
-<body class="fixed-left" style="background-image: url('./images/newbg.jpg'); 
-  background-attachment: fixed;
-  background-size: cover;
-  background-size: 100% 100%;
-  background-position: 100px 10px;">
+<body>
 
   <!-- Top Bar Start -->
   <?php include('includes/navbar.php'); ?>
   <!-- ========== Left Sidebar Start ========== -->
   <?php include('includes/sidebar.php'); ?>
   <!-- Left Sidebar End -->
+  <main class="mt-5 pt-4" style="background: url(./images/cover.png);
+  height: 610px;
+  background-position:center;
+  background-repeat:no-repeat;
+  background-size:cover;
+  background-position:center;
+  ">
+        
+    </main>
 
   <script src="./js/bootstrap.bundle.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@3.0.2/dist/chart.min.js"></script>
