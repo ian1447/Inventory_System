@@ -28,11 +28,11 @@ if (isset($_SESSION['username']))
 </head>
 <body style="background-color: #E0B0FF">
         
-    <div class="d-flex flex-row" style="position: relative; left: -50px;">
+    <div class="d-flex flex-row" style="position: relative; left: 0px;">
         <div>
-            <img src="./images/logo.png" width="550px" height="455px" alt="">
+            <img src="./images/logo.png" width="800px" height="640px" alt="">
         </div>
-        <form class=" col-md-12 col-lg-6 form card justify-content-center" action="Login.php" method="POST">
+        <form class=" col-md-12 col-lg-4 form card justify-content-center" action="Login.php" method="POST">
             <div class="field px-4 ">
                 <label class="text-dark" style="font-weight: bold"> Username </label>
                 <input class="input" name="username" type="text" placeholder="Username" id="username" required>
