@@ -40,7 +40,7 @@ if (isset($_SESSION['username']))
             <div class="field mt-4 mb-7 px-4 py-2">
             <label class="text-dark" style="font-weight: bold"> Password </label>
                 <input class="input px-2" name="user_password" type="password" placeholder="Password" id="password" required>
-            </div>
+            </div> 
             <br/>
                 <button class="text-white btn-lg px-5 py-2" style="background-color: #041C32; border-radius:26px; width: 100%">Login</button>
         </form>
