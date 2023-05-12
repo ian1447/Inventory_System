@@ -287,32 +287,50 @@ include "../dbcon.php";
                         } ?>
                       </td>
                       <td>
-                        <div class="d-grid gap-2 d-md-flex">
-                          <?php if ($result['is_updated']==0){
-                            if ($result['date_returned'] != NULL)
-                            { ?>
-                             <a href="#edit<?php echo $result['transid']; ?>" data-toggle="modal" class="btn btn-primary btn-sm me-md-2"><span class="me-2"><i class="bi bi-pencil"></i></span> sdf</a> ||
-                            <?php 
-                             }
-                             else 
-                             {
-                             echo '<button type="button" class="btn btn-light">Not yet Returned</button>';
-                             }}
-                            
-                            else {
-                            echo '<button type="button" class="btn btn-light">Updated</button>';
-                             } ?>
-
-
-                          <?php if ($result['date_returned'] == NULL) { ?>
-                            <a href="#ret<?php echo $result['transid']; ?>" data-toggle="modal" class="btn btn-primary btn-sm"><span class=""><i></i></span>
-                              Return</a>
-                          <?php } else {
-                            echo '<button type="button" class="btn btn-light">Returned</button>';
-                          } ?>
-                        </div>
+                      <button type="button" id="action" class="btn btn-link"><span class="bi bi-three-dots-vertical"></span></button>
                       </td>
                     </tr>
+
+                    <!-- Action Modal -->
+                    <div id="action1<?php echo $result['transid']; ?>" class="modal fade">
+                      <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                          <form id="update_form" method="POST">
+                            <div class="modal-header">
+                              <h4 class="modal-title">Actions</h4>
+                              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="d-grid gap-2 d-md-flex">
+                              <!-- <?php if ($result['is_updated']==0){
+                                if ($result['date_returned'] != NULL)
+                                { ?>
+                                <a href="#edit<?php echo $result['transid']; ?>" data-toggle="modal" class="btn btn-primary btn-sm me-md-2"><span class="me-2"><i class="bi bi-pencil"></i></span> sdf</a> ||
+                                <?php 
+                                }
+                                else 
+                                {
+                                echo '<button type="button" class="btn btn-light">Not yet Returned</button>';
+                                }}
+                                
+                                else {
+                                echo '<button type="button" class="btn btn-light">Updated</button>';
+                                } ?>
+
+
+                              <?php if ($result['date_returned'] == NULL) { ?>
+                                <a href="#ret<?php echo $result['transid']; ?>" data-toggle="modal" class="btn btn-primary btn-sm"><span class=""><i></i></span>
+                                  Return</a>
+                              <?php } else {
+                                echo '<button type="button" class="btn btn-light">Returned</button>';
+                              } ?> -->
+                            </div>
+                            </div>
+                          </form>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- End of Action Modal -->
 
                     <!-- Start of Edit Modal -->
                     <!-- Edit Modal HTML -->
@@ -533,30 +551,50 @@ include "../dbcon.php";
                         } ?>
                       </td>
                       <td>
-                        <div class="d-grid gap-2 d-md-flex">
-                          <?php if ($result['is_updated']==0){
-                            if ($result['date_returned'] != NULL)
-                            { ?>
-                             <a href="#edit<?php echo $result['transid']; ?>" data-toggle="modal" class="btn btn-primary btn-sm me-md-2"><span class="me-2"><i class="bi bi-pencil"></i></span> Update</a> ||
-                            <?php 
-                             }
-                             else 
-                             {
-                             echo '<button type="button" class="btn btn-light">Not yet Returned</button>';
-                             }}
-                            
-                            else {
-                            echo '<button type="button" class="btn btn-light">Updated</button>';
-                             } ?>
-                          <?php if ($result['date_returned'] == NULL) { ?>
-                            <a href="#ret<?php echo $result['transid']; ?>" data-toggle="modal" class="btn btn-primary btn-sm"><span class=""><i></i></span>
-                              Return</a>
-                          <?php } else {
-                            echo '<button type="button" class="btn btn-light">Returned</button>';
-                          } ?>
-                        </div>
+                        <button type="button" id="action" class="btn btn-link"><span class="bi bi-three-dots-vertical"></span></button>
                       </td>
                     </tr>
+
+                    <!-- Action Modal -->
+                    <div id="action1<?php echo $result['transid']; ?>" class="modal fade">
+                      <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                          <form id="update_form" method="POST">
+                            <div class="modal-header">
+                              <h4 class="modal-title">Actions</h4>
+                              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="d-grid gap-2 d-md-flex">
+                              <!-- <?php if ($result['is_updated']==0){
+                                if ($result['date_returned'] != NULL)
+                                { ?>
+                                <a href="#edit<?php echo $result['transid']; ?>" data-toggle="modal" class="btn btn-primary btn-sm me-md-2"><span class="me-2"><i class="bi bi-pencil"></i></span> sdf</a> ||
+                                <?php 
+                                }
+                                else 
+                                {
+                                echo '<button type="button" class="btn btn-light">Not yet Returned</button>';
+                                }}
+                                
+                                else {
+                                echo '<button type="button" class="btn btn-light">Updated</button>';
+                                } ?>
+
+
+                              <?php if ($result['date_returned'] == NULL) { ?>
+                                <a href="#ret<?php echo $result['transid']; ?>" data-toggle="modal" class="btn btn-primary btn-sm"><span class=""><i></i></span>
+                                  Return</a>
+                              <?php } else {
+                                echo '<button type="button" class="btn btn-light">Returned</button>';
+                              } ?> -->
+                            </div>
+                            </div>
+                          </form>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- End of Action Modal -->
 
                     <!-- Start of Edit Modal -->
                     <!-- Edit Modal HTML -->
