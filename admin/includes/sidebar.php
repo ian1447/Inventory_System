@@ -52,6 +52,14 @@
                       <span>Supplies Released</span>
                     </a>
                   </li>
+                  <!-- <li>
+                    <a href="./suppliesAction.php" class="nav-link px-3 text-white">
+                      <span class="me-2"
+                        ><i class="bi bi-hand-index-thumb-fill"></i
+                      ></span>
+                      <span>Manage Actions</span>
+                    </a>
+                  </li> -->
                   <li>
                     <a href="./categories.php" class="nav-link px-3 text-white">
                       <span class="me-2"
