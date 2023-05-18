@@ -264,23 +264,23 @@ include "../dbcon.php";
                                                   echo "Not Yet Returned!";
                                                 } else {
                                                   if ($result['status'] == 0) { ?>
-                                                                            <button class="btn btn-success btn-sm me-md-2" type="button">
-                                                                              <span class="badge badge-secondary">
-                                                                                <?php echo $result['borrwedquan']; ?>
-                                                                              </span>
-                                                                              Serviceable
-                                                                            </button>
-                                                              <?php } elseif ($result['status'] == 1) { ?>
-                                                                            <button class="btn btn-warning btn-sm me-md-2" type="button">
-                                                                              <span class="badge badge-secondary"></span>
-                                                                              Unserviceable
-                                                                            </button>
-                                                              <?php } else { ?>
-                                                                            <button class="btn btn-danger btn-sm me-md-2" type="button">
-                                                                              <span class="badge badge-secondary"></span>
-                                                                              Disposed
-                                                                            </button>
-                                                            <?php }
+                                                  <button class="btn btn-success btn-sm me-md-2" type="button">
+                                                    <span class="badge badge-secondary">
+                                                      <?php echo $result['borrwedquan']; ?>
+                                                    </span>
+                                                    Serviceable
+                                                  </button>
+                                              <?php } elseif ($result['status'] == 1) { ?>
+                                                            <button class="btn btn-warning btn-sm me-md-2" type="button">
+                                                              <span class="badge badge-secondary"></span>
+                                                              Unserviceable
+                                                            </button>
+                                              <?php } else { ?>
+                                                            <button class="btn btn-danger btn-sm me-md-2" type="button">
+                                                              <span class="badge badge-secondary"></span>
+                                                              Disposed
+                                                            </button>
+                                            <?php }
                                                 } ?>
                                               </td>
                                               <td>
@@ -533,23 +533,35 @@ include "../dbcon.php";
                                                 <div class="dropdown">
                                                   <span class="btn bi bi-three-dots-vertical" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></span>
                                                   <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                                      <a class="dropdown-item" href="#" data-toggle="modal" data-target="#edit<?php echo $result['transid']; ?>">Update</a>
-                                                      <a class="dropdown-item" href="#" data-toggle="modal" data-target="#ret<?php echo $result['transid']; ?>">Returned</a>
+                                                    <?php
+                                                    if ($result['is_updated'] == 0) {
+                                                      if ($result['date_returned'] != NULL) { ?>
+                                                        <a class="dropdown-item bg-primary text-white"  href="#" data-toggle="modal" data-target="#edit<?php echo $result['transid']; ?>" >Update</a>
+                                                      <?php } else {
+                                                        echo '<button type="button" class="btn btn-light">Not yet Returned</button>';
+                                                      }
+                                                    }else {
+                                                      echo '<button type="button" class="btn btn-light">Updated</button>';
+                                                    }
+
+                                                    if ($result['date_returned'] == NULL) { ?>
+                                                      <a class="dropdown-item bg-primary text-white" href="#" data-toggle="modal" data-target="#ret<?php echo $result['transid']; ?>">Return</a>
+                                                    <?php }  else {
+                                                      echo '<button type="button" class="btn btn-light">Returned</button>';
+                                                    }
+                                                    ?>
                                                   </div>
                                                 </div>
                                               </td>
                                               <!-- <td>
                                 <div class="d-grid gap-2 d-md-flex">
-                                  <?php if ($result['is_updated'] == 0) {
+                                  <?php 
                                     if ($result['date_returned'] != NULL) { ?>
                                              <a href="#edit<?php echo $result['transid']; ?>" data-toggle="modal" class="btn btn-primary btn-sm me-md-2"><span class="me-2"><i class="bi bi-pencil"></i></span> Update</a> ||
                                           <?php
                                     } else {
                                       echo '<button type="button" class="btn btn-light">Not yet Returned</button>';
-                                    }
-                                  } else {
-                                    echo '<button type="button" class="btn btn-light">Updated</button>';
-                                  } ?>
+                                    } ?>
                                   <?php if ($result['date_returned'] == NULL) { ?>
                                         <a href="#ret<?php echo $result['transid']; ?>" data-toggle="modal" class="btn btn-primary btn-sm"><span class=""><i></i></span>
                                           Return</a>
@@ -700,11 +712,14 @@ include "../dbcon.php";
                                                   <?php
                                                   if (isset($_POST['returnquan'])) {
                                                     if ($_POST['returnquan'] > $_POST['transactionquan']) {
+                                                      $flagger = 0;
                                                       echo '<script>alert("Quantity exceeds transaction quan") 
                               window.location.href="supplies.php"</script>';
                                                     } else {
+                                                      $sqlborrowedquan = "UPDATE supplies SET borrowed_quantity = borrowed_quantity - " . $_POST['returnquan'] . " WHERE  `name` = '" . $_POST['returnsupply'] . "'";
+                                                      $conn->query($sqlborrowedquan);
                                                       if ($_POST['returnquan'] == $_POST['transactionquan']) {
-                                                        $sql = "UPDATE transactions set date_returned = NOW(), `status` = 1  WHERE id = " . $_POST['returnid'] . "";
+                                                        $sql = "UPDATE transactions set date_returned = NOW(), `status` = 0  WHERE id = " . $_POST['returnid'] . "";
                                                         if ($conn->query($sql) === TRUE) {
                                                           echo '<script>alert("Returned Successfully!") 
                                                   window.location.href="supplies.php"</script>';
@@ -718,7 +733,7 @@ include "../dbcon.php";
                                                         $conn->query($sqleditquan);
 
                                                         $sqlnew = "INSERT INTO `transactions` (`supply_name`,`borrower_name`,`quantity`,date_released,barcode,date_returned,`status`)
-                                      VALUES ('" . $_POST['returnsupply'] . "','" . $_POST['returnname'] . "','" . $_POST['returnquan'] . "','" . $_POST['datereleased'] . "','" . $_POST['rbarcode'] . "',now(),1)";
+                                      VALUES ('" . $_POST['returnsupply'] . "','" . $_POST['returnname'] . "','" . $_POST['returnquan'] . "','" . $_POST['datereleased'] . "','" . $_POST['rbarcode'] . "',now(),0)";
                                                         if ($conn->query($sqlnew) === TRUE) {
                                                           $_POST["returnquan"] = null;
                                                           echo '<script>alert("Success!") 
