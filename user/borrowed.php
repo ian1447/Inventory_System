@@ -19,9 +19,10 @@ include "../dbcon.php";
   <link rel="stylesheet" href="css/style.css" />
 
   <style>
-    .badge{
+    p{
       text-align: center;
-      width: 110px;
+      width: 120px;
+      border-radius: 10px;
     }
   </style>
 </head>
@@ -110,25 +111,17 @@ include "../dbcon.php";
                          </td>
                          <td>
                            <?php if ($result['date_returned'] == NULL) {
-                             echo '<h6><span class="badge rounded-pill badge-secondary">Not Yet Returned!</span></h6>';
+                             echo '<p class="bg-secondary text-white">Not Yet Returned!</p>';
                            } else {
                              if ($result['status'] == 0) { ?>
-                               <!-- <button class="btn btn-success btn-sm me-md-2" type="button"> -->
-                                 <!-- <span class="badge badge-secondary">
-                                   <?php echo $result['borrwedquan']; ?>
-                                 </span>
-                                 Serviceable -->
-                               <!-- </button> -->
-                               <h5><span class="badge rounded-pill badge-success">
+                               <p class="bg-success text-white">
                                 <?php echo $result['borrwedquan']; ?>
                                  Serviceable
-                              </span></h5>
+                             </p>
                              <?php } elseif ($result['status'] == 1) { ?>
-                               <!-- <button class="btn btn-warning btn-sm me-md-2" type="button"> -->
-                               <h5><span class="badge rounded-pill badge-warning">Unserviceable</span></h5>
-                               <!-- </button> -->
+                              <p class="bg-warning">Unserviceable</p>
                              <?php } else { ?>
-                              <h5><span class="badge rounded-pill badge-secondary">Disposed</span></h3>
+                              <p class="bg-danger text-white">Disposed</p>
                            <?php }
                            } ?>
                       <!-- Delete -->

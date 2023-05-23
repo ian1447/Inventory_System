@@ -10,15 +10,15 @@ include "../dbcon.php";
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="css/bootstrap.min.css" />
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" />
   <link rel="stylesheet" href="css/dataTables.bootstrap5.min.css" />
   <link rel="stylesheet" href="css/style.css" />
   
   <style>
-    .badge{
+    p{
       text-align: center;
-      width: 110px;
+      width: 120px;
+      border-radius: 10px;
     }
   </style>
 </head>
@@ -269,25 +269,15 @@ include "../dbcon.php";
                                               </td>
                                               <td>
                                                 <?php if ($result['date_returned'] == NULL) {
-                                                  echo '<h6><span class="badge rounded-pill badge-secondary">
-                                                  Not Yet Returned!
-                                                </span></h6>';
+                                                  echo '<p class="bg-secondary text-white">Not Yet Returned!</p>';
                                                 } else {
                                                   if ($result['status'] == 0) { ?>
-                                                  <!-- <button class="btn btn-success btn-sm me-md-2" type="button"> -->
-                                                    <h6><span class="badge rounded-pill badge-success">
-                                                      <?php echo $result['borrwedquan']; ?>
-                                                      Serviceable
-                                                    </span></h6>
-                                                  <!-- </button> -->
+                                                      <p class="bg-success text-white"><?php echo $result['borrwedquan']; ?>
+                                                      Serviceable</p>
                                               <?php } elseif ($result['status'] == 1) { ?>
-                                                            <!-- <button class="btn btn-warning btn-sm me-md-2" type="button"> -->
-                                                            <h6><span class="badge rounded-pill badge-warning">Unserviceable</span></h3>
-                                                            <!-- </button> -->
+                                                <p class="bg-warning">Unserviceable</p>
                                               <?php } else { ?>
-                                                            <!-- <button class="btn btn-danger btn-sm me-md-2" type="button"> -->
-                                                            <h6><span class="badge rounded-pill badge-danger">Disposed</span></h3>
-                                                            <!-- </button> -->
+                                                <p class="bg-danger text-white">Disposed</p>
                                             <?php }
                                                 } ?>
                                               </td>
@@ -515,25 +505,17 @@ include "../dbcon.php";
                                               </td>
                                               <td>
                                                 <?php if ($result['date_returned'] == NULL) {
-                                                  echo '<h6><span class="badge rounded-pill badge-secondary">
-                                                  Not Yet Returned!
-                                                </span></h6>';
+                                                  echo '<p class="bg-secondary text-white">Not Yet Returned!</p>';
                                                 } else {
                                                   if ($result['status'] == 0) { ?>
-                                                                            <!-- <button class="btn btn-success btn-sm me-md-2" type="button"> -->
-                                                                            <h6><span class="badge rounded-pill badge-success">
+                                                                           <p class="bg-success text-white">
                                                                                 <?php echo $result['borrwedquan']; ?>
                                                                                 Serviceable
-                                                                              </span></h6>
-                                                                            <!-- </button> -->
+                                                                          </p>
                                                               <?php } elseif ($result['status'] == 1) { ?>
-                                                                            <!-- <button class="btn btn-warning btn-sm me-md-2" type="button"> -->
-                                                                            <h6><span class="badge rounded-pill badge-warning">Unserviceable</span></h6>
-                                                                            <!-- </button> -->
+                                                                <p class="bg-warning">Unserviceable</p>
                                                               <?php } else { ?>
-                                                                            <!-- <button class="btn btn-danger btn-sm me-md-2" type="button"> -->
-                                                                            <h6><span class="badge rounded-pill badge-danger">Disposed</span></h3>
-                                                                            <!-- </button> -->
+                                                                <p class="bg-danger text-white">Disposed</p>
                                                             <?php }
                                                 } ?>
                                               </td>
